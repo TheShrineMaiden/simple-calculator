@@ -45,13 +45,13 @@ static const char* operators_str = "+-*/^";
 static unsigned highest_level = 0;
 static double res = 0.0f;
 
-void print_error(ERR_CODE);
-void ch_str_clean(ch_str*);
-char* op_as_cstr(OP);
-int isbracket(int, int);
-int check_operator(int);
-ERR_CODE parse_tokens(ch_str);
-ERR_CODE calculate(double*);
+static void print_error(ERR_CODE);
+static void ch_str_clean(ch_str*);
+static char* op_as_cstr(OP);
+static int isbracket(int, int);
+static int check_operator(int);
+static ERR_CODE parse_tokens(ch_str);
+static ERR_CODE calculate(double*);
 
 int main(void) 
 {
@@ -101,7 +101,7 @@ int main(void)
     return 0;
 }
 
-void print_error(ERR_CODE err) 
+static void print_error(ERR_CODE err) 
 {
     printf("ERROR: ");
     switch (err) 
@@ -117,7 +117,7 @@ void print_error(ERR_CODE err)
     }
 }
 
-void ch_str_clean(ch_str* str)
+static void ch_str_clean(ch_str* str)
 {
     for (; str->size > 0 && 
         (str->data[0] == '+' || str->data[0] == '-' ||
@@ -126,21 +126,21 @@ void ch_str_clean(ch_str* str)
         ch_str_chop_left(str, 1);
 }
 
-int isbracket(int c, int close) 
+static int isbracket(int c, int close) 
 {
     char b[2] = "()";
     if (c == b[close]) return 1;
     return 0;
 }
 
-int check_operator(int c) 
+static int check_operator(int c) 
 {
     for (size_t i = 0; i < strlen(operators_str); i++)
         if (c == operators_str[i]) return i;
     return -1;
 }
 
-char* op_as_cstr(OP op) 
+static char* op_as_cstr(OP op) 
 {
     switch (op) 
     {
@@ -159,7 +159,7 @@ char* op_as_cstr(OP op)
 // n + 1: multiplication/division
 // with n being the level of scope
 
-ERR_CODE parse_tokens(ch_str string) 
+static ERR_CODE parse_tokens(ch_str string) 
 {
     unsigned level = 0;
     unsigned open_bracket_count = 0;
@@ -373,7 +373,7 @@ ERR_CODE parse_tokens(ch_str string)
     return ERR_OK;
 }
 
-ERR_CODE calculate(double* num) 
+static ERR_CODE calculate(double* num) 
 {
     CH_ARRAY(Token) tokens_temp;
     CH_ARRAY_INIT(tokens_temp);
